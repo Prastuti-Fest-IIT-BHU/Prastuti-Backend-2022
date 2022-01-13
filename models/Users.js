@@ -51,13 +51,14 @@ const UserSchema = new mongoose.Schema({
 })
 
 UserSchema.pre(/^find/, async function(next) {
-    await this.populate({
+    this.populate({
         path: 'Pending_Requests'
     });
-    await this.populate({
+    this.populate({
         path: 'Teams',
         select: 'Team_Name Members'
     })
+    next();
 })
 
 const User = mongoose.model('user', UserSchema);
