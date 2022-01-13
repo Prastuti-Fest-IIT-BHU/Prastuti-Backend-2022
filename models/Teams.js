@@ -22,7 +22,7 @@ const TeamSchema = new mongoose.Schema({
         required : true
     },
     Member_Count : {
-        type : Integer,
+        type : Number,
         required : true,
         max : [3, 'Max members allowed is 3']
     },
