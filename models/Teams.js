@@ -1,31 +1,49 @@
 const mongoose = require('mongoose');
 
-const TeamSchema = mongoose.Schema({
+const TeamSchema = new mongoose.Schema({
     Team_Name : {
         type : String,
-        unique : [true, 'This Team Name is not available.'],
+        unique : [true, 'This Team Name is not available'],
         required : true
     },
     Events : {
         type : [String],
         required : true,
         enum : {
-            values: [/*Event Names*/],
+            values: ["consilium", "hackathon", "cryptex", "codigo", "simulim", "recognizance"],
             message : 'Invalid Event Name'
         }
     },
     Members : {
-        type : [{type : Schema.Types.ObjectId, ref : 'user'}],
+        type : [{
+            type : mongoose.Schema.Types.ObjectId, 
+            ref : 'user'
+        }],
         required : true
     },
     Member_Count : {
         type : Integer,
         required : true,
-        max : [3, 'Max members allowed is 3.']
+        max : [3, 'Max members allowed is 3']
     },
     Pending_Requests : {
-        type : [{type : Schema.Types.ObjectId, ref : 'request'}]
+        type : [{
+            type : mongoose.Schema.Types.ObjectId, 
+            ref : 'request'
+        }]
     }
 })
 
-mongoose.exports = mongoose.model('team', TeamSchema);
+TeamSchema.pre(/^find/, async function(next) {
+    await this.populate({
+        path: 'Members',
+        select: 'Name email_id College'
+    });
+    await this.populate({
+        path: 'Pending_Requests'
+    })
+    next();
+})
+
+const Team = mongoose.model('team', TeamSchema);
+module.exports = Team;

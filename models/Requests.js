@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const ReqSchema = mongoose.Schema({
+const ReqSchema = new mongoose.Schema({
     For_Team : {
         type : {type : Schema.Types.ObjectId, ref : 'team'},
         required : true
@@ -11,11 +11,25 @@ const ReqSchema = mongoose.Schema({
     }
 })
 
-const RemoveRef = ()=> {
-    ReqSchema.pre('remove', async function(next) {
-    await this.model('Users').remove({ Pending_Requests : this._id});
-    await this.model('Teams').remove({ Pending_Requests : this._id}, next);})
-}
+ReqSchema.pre(/^find/, function(next) {
+    await this.populate({
+        path: 'For_Team',
+        select: 'Team_Name Members'
+    })
+    await this.populate({
+        path: 'Req_To',
+        select: 'Name email_id College'
+    })
+})
 
-module.exports = RemoveRef
-mongoose.exports = mongoose.model('request', ReqSchema);
+ReqSchema.pre('remove', function(next) {
+    this.model('team').remove({
+        Pending_Requests : this._id
+    })
+    this.model('user').remove({
+        Pending_Requests : this._id
+    })
+})
+
+const Request = mongoose.model('request', ReqSchema);
+module.exports = Request;
