@@ -1,4 +1,5 @@
 const Users = require('../models/Users');
+const { options } = require('../routes/routes');
 
 const getAllUsers = async (req, res) => {
     const allusers = await Users.find({});
@@ -14,7 +15,7 @@ const getUser = async (req, res) =>{
 }
 
 const editUser = async (req, res) =>{
-    const user = await Users.findOneandUpdate({id:req.params.id}, req.body)
+    const user = await Users.findOneandUpdate({id:req.params.id}, req.body, options.returnDocument='after')
     if (!user){
         res.status(404).send('User not found')
     }
