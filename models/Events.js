@@ -48,11 +48,11 @@ const EventSchema = new mongoose.Schema({
 })
 
 EventSchema.pre(/^find/, async function(next) {
-    await this.Participants.populate({
+    this.Participants.populate({
         path: 'Participant',
         select: 'Name email_id College'
     })
-    await this.Teams.populate({
+    this.Teams.populate({
         path: 'Team',
         select: 'Team_Name Members'
     })

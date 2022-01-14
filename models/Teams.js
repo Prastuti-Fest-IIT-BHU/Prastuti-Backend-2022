@@ -35,11 +35,11 @@ const TeamSchema = new mongoose.Schema({
 })
 
 TeamSchema.pre(/^find/, async function(next) {
-    await this.populate({
+    this.populate({
         path: 'Members',
         select: 'Name email_id College'
     });
-    await this.populate({
+    this.populate({
         path: 'Pending_Requests'
     })
     next();

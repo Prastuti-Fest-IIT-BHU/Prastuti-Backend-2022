@@ -12,14 +12,15 @@ const ReqSchema = new mongoose.Schema({
 })
 
 ReqSchema.pre(/^find/, function(next) {
-    await this.populate({
+    this.populate({
         path: 'For_Team',
         select: 'Team_Name Members'
     })
-    await this.populate({
+    this.populate({
         path: 'Req_To',
         select: 'Name email_id College'
     })
+    next();
 })
 
 ReqSchema.pre('remove', function(next) {
