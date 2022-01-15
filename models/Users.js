@@ -39,13 +39,13 @@ const UserSchema = new mongoose.Schema({
         default : []
     },
     Total_Score : {
-        type : Integer,
+        type : Number,
         default : 0
     },
     Events_Participated : {
         Type : [{
             Event_Name : String,
-            Event_Score : Integer
+            Event_Score : Number
         }]
     }
 })

@@ -11,7 +11,7 @@ const EventSchema = new mongoose.Schema({
         }
     },
     Participants_Count : {
-        type : Integer,
+        type : Number,
         required : true,
         default : 0
     },
@@ -25,10 +25,10 @@ const EventSchema = new mongoose.Schema({
                 type : mongoose.Schema.Types.ObjectId, 
                 ref : 'user'
             },
-            Score : Integer,
+            Score : Number,
             Details : [{
                 Round_Name : String,
-                Round_Score : Integer
+                Round_Score : Number
             }]
         }]
     },
@@ -38,10 +38,10 @@ const EventSchema = new mongoose.Schema({
                 type : mongoose.Schema.Types.ObjectId, 
                 ref : 'team'
             },
-            Score : Integer,
+            Score : Number,
             Details : [{
                 Round_Name : String,
-                Round_Score : Integer
+                Round_Score : Number
             }]
         }]
     }
