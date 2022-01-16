@@ -13,7 +13,7 @@ const users = [
         email_id: "john@gmail.com",
         College: "IIT BHU",
         Phone: 1234567890,
-        Events_Participated: ["61e41bb0c8cc613d0382785a", "61e41bb0c8cc613d0382785f"],
+        Events_Participated: [],
         Teams: [],
         Pending_Requests: []
     },
@@ -22,7 +22,7 @@ const users = [
         email_id: "jane@gmail.com",
         College: "IIT Delhi",
         Phone: 1234567890,
-        Events_Participated: ["61e41bb0c8cc613d0382785e", "61e41bb0c8cc613d0382785a"],
+        Events_Participated: [],
         Teams: [],
         Pending_Requests: []
     },
@@ -31,7 +31,7 @@ const users = [
         email_id: "will@gmail.com",
         College: "IIT BHU",
         Phone: 1234567890,
-        Events_Participated: ["61e41bb0c8cc613d0382785b", "61e41bb0c8cc613d0382785e"],
+        Events_Participated: [],
         Teams: [],
         Pending_Requests: []
     },
@@ -40,7 +40,7 @@ const users = [
         email_id: "peter@gmail.com",
         College: "BITS Pilani",
         Phone: 1234567890,
-        Events_Participated: ["61e41bb0c8cc613d0382785d", "61e41bb0c8cc613d0382785b"],
+        Events_Participated: [],
         Teams: [],
         Pending_Requests: []
     },
@@ -49,7 +49,7 @@ const users = [
         email_id: "alan@gmail.com",
         College: "VIT Vellore",
         Phone: 1234567890,
-        Events_Participated: ["61e41bb0c8cc613d0382785c", "61e41bb0c8cc613d0382785d"],
+        Events_Participated: [],
         Teams: [],
         Pending_Requests: []
     }
@@ -98,7 +98,7 @@ const teams = [
     {
         Team_Name: "Team 1",
         Events: ["Hackathon", "Recognizance"],
-        Members: ["61e41747c661f5fc801e71e9", "61e41747c661f5fc801e71eb"],
+        Members: [],
         Member_Count: 2
     }
 ]
