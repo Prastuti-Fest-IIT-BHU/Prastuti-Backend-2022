@@ -1,13 +1,13 @@
-const Users = require('../models/Users');
-const { options } = require('../routes/routes');
+const userModel = require('../models/Users');
+const eventModel = require('../models/Events');
 
 const getAllUsers = async (req, res) => {
-    const allusers = await Users.find({});
+    const allusers = await userModel.find({});
     res.status(200).json(allusers);
 }
 
 const getUser = async (req, res) =>{
-    const user = await Users.find({_id:req.params.id});
+    const user = await userModel.find({_id:req.params.id});
     if (!user){
         res.status(404).send('User not found')
     }
@@ -15,19 +15,24 @@ const getUser = async (req, res) =>{
 }
 
 const editUser = async (req, res) =>{
-    const user = await Users.findOneandUpdate({id:req.params.id}, req.body, options.returnDocument='after')
-    if (!user){
-        res.status(404).send('User not found')
+    try {
+        const user = await userModel.findByIdAndUpdate(req.params.id , req.body, {
+            new: true
+        });
+        res.json(user);
     }
-    res.json(user);
+    catch(err) {
+        console.log(err);
+    }
 }
 
-const eventUser = async (req, res) =>{
-    const user = await Users.find({Events_Participated : req.params.event})
-    if (!user){
-        res.status(404).send('User not found')
-    }
-    res.json(user);
+const eventUser = async (req, res) => {
+    const event = await eventModel.findOne({
+        Name: req.params.event
+    });
+    res.status(200).json({
+        users: event.Participants
+    })
 }
 
 module.exports = {getAllUsers, getUser, editUser, eventUser}

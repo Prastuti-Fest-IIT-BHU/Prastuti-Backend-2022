@@ -9,8 +9,8 @@ const {addScore, addTeamScore} = require('../controllers/score');
 Router.route('/login').get();
 
 Router.route('/user/:id').get(getUser).put(editUser);
-Router.route('/user').get(getAllUsers);
-Router.route('/user/:event/all').get(eventUser);
+Router.route('/users').get(getAllUsers);
+Router.route('/users/:event').get(eventUser);
 
 Router.route('/request').get().post().delete();
 
