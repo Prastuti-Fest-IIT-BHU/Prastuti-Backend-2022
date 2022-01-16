@@ -114,7 +114,7 @@ const populateUsers = async () => {
 const populateEvents = async () => {
     events.forEach(async (event) => {
         await eventModel.create(event);
-        console.log(`Added user ${event.Name}`);
+        console.log(`Added event ${event.Name}`);
     })
 }
 
@@ -135,11 +135,17 @@ const deleteEvents = async () => {
     console.log('Deleted all events');
 }
 
+const deleteTeams = async () => {
+    await teamModel.deleteMany({});
+    console.log('Deleted all teams');
+}
+
 mongoose.connect(process.env.MONGO_URI).then(() => {
     console.log('Successfully connected to database');
-    // populateUsers();
+    populateUsers();
     // deleteUsers();
-    // populateEvents();
+    populateEvents();
     // deleteEvents();
     // populateTeams();
+    // deleteTeams();
 })
