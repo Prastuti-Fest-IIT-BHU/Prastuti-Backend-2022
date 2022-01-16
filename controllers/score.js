@@ -5,7 +5,7 @@ const Users = require('../models/Users');
 const addScore = async (req, res) => {
     const {eventName, score} = req.body;
     events_partcipated = [...Users.Events_Participated];
-    new event_present = events_partcipated.find(val => val.Event_Name==eventName)
+    const event_present = events_partcipated.find(val => val.Event_Name==eventName)
     if (event_present) {
         await events_partcipated.forEach(element => {
             if (element.Event_Name==eventName) {
