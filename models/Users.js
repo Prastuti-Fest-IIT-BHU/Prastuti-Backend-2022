@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
 
+const teamModel = require('./Teams');
+const requestModel = require('./Requests');
+const eventModel = require('./Events');
+
 const UserSchema = new mongoose.Schema({
     Name : {
         type : String,
@@ -24,30 +28,22 @@ const UserSchema = new mongoose.Schema({
     Phone : {
         type : Number
     },
-    Teams : {
-        type : [{
-            type : mongoose.Schema.Types.ObjectId, 
-            ref : 'team'
-        }],
-        default : []
-    },
-    Pending_Requests : {
-        type : [{
-            type : mongoose.Schema.Types.ObjectId, 
-            ref : 'request'
-        }],
-        default : []
-    },
+    Teams : [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'team'
+    }],
+    Pending_Requests : [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'request'
+    }],
     Total_Score : {
         type : Number,
         default : 0
     },
-    Events_Participated : {
-        Type : [{
-            Event_Name : String,
-            Event_Score : Number
-        }]
-    }
+    Events_Participated : [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'event'
+    }]
 })
 
 UserSchema.pre(/^find/, async function(next) {
@@ -56,7 +52,11 @@ UserSchema.pre(/^find/, async function(next) {
     });
     this.populate({
         path: 'Teams',
-        select: 'Team_Name Members'
+        select: 'Team_Name'
+    });
+    this.populate({
+        path: 'Events_Participated',
+        select: '-Participants -Teams -Team_Event -__v'
     })
     next();
 })

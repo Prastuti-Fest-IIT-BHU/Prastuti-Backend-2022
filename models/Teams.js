@@ -10,7 +10,7 @@ const TeamSchema = new mongoose.Schema({
         type : [String],
         required : true,
         enum : {
-            values: ["consilium", "hackathon", "cryptex", "codigo", "simulim", "recognizance"],
+            values: ["Consilium", "Hackathon", "Cryptex", "Codigo", "Simulim", "Recognizance"],
             message : 'Invalid Event Name'
         }
     },
@@ -26,24 +26,22 @@ const TeamSchema = new mongoose.Schema({
         required : true,
         max : [3, 'Max members allowed is 3']
     },
-    Pending_Requests : {
-        type : [{
-            type : mongoose.Schema.Types.ObjectId, 
-            ref : 'request'
-        }]
-    }
+    Pending_Requests : [{
+        type : mongoose.Schema.Types.ObjectId, 
+        ref : 'request'
+    }]
 })
 
-TeamSchema.pre(/^find/, async function(next) {
-    this.populate({
-        path: 'Members',
-        select: 'Name email_id College'
-    });
-    this.populate({
-        path: 'Pending_Requests'
-    })
-    next();
-})
+// TeamSchema.pre(/^find/, async function(next) {
+//     this.populate({
+//         path: 'Members',
+//         select: 'Name email_id College'
+//     });
+//     this.populate({
+//         path: 'Pending_Requests'
+//     })
+//     next();
+// })
 
 const Team = mongoose.model('team', TeamSchema);
 module.exports = Team;

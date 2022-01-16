@@ -2,11 +2,13 @@ const mongoose = require('mongoose');
 
 const ReqSchema = new mongoose.Schema({
     For_Team : {
-        type : {type : Schema.Types.ObjectId, ref : 'team'},
+        type : mongoose.Schema.Types.ObjectId, 
+        ref : 'team',
         required : true
     },
     Req_to : {
-        type : {type : mongoose.Schema.Types.ObjectId, ref : 'user'},
+        type : mongoose.Schema.Types.ObjectId, 
+        ref : 'user',
         required : true
     }
 })

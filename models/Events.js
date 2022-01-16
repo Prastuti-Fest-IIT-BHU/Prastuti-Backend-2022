@@ -1,12 +1,15 @@
 const mongoose = require('mongoose');
 
+const userModel = require('./Users');
+const teamModel = require('./Teams');
+
 const EventSchema = new mongoose.Schema({
     Name : {
         type : String,
         required : [true, 'Name is required'],
         trim : true,
         enum : {
-            Values : ["consilium", "hackathon", "cryptex", "codigo", "simulim", "recognizance"],
+            values : ["Consilium", "Hackathon", "Cryptex", "Codigo", "Simulim", "Recognizance"],
             message : 'Invalid Event Name'
         }
     },
@@ -19,41 +22,32 @@ const EventSchema = new mongoose.Schema({
         type : Boolean,
         required : true
     },
-    Participants : {
-        type : [{
-            Participant : {
-                type : mongoose.Schema.Types.ObjectId, 
-                ref : 'user'
-            },
-            Score : Number,
-            Details : [{
-                Round_Name : String,
-                Round_Score : Number
-            }]
-        }]
-    },
-    Teams : {
-        type : [{
-            Team : {
-                type : mongoose.Schema.Types.ObjectId, 
-                ref : 'team'
-            },
-            Score : Number,
-            Details : [{
-                Round_Name : String,
-                Round_Score : Number
-            }]
-        }]
-    }
+    Participants : [{
+        participant: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'user'
+        },
+        Score: Number
+    }],
+    Teams : [{
+        team: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'team'
+        },
+        Score: {
+            type: Number,
+            default: 0
+        }
+    }]
 })
 
 EventSchema.pre(/^find/, async function(next) {
-    this.Participants.populate({
-        path: 'Participant',
-        select: 'Name email_id College'
+    this.populate({
+        path: 'Participants.participant',
+        select: '-Teams -Pending_Requests -Events_Participated -__v -Total_Score'
     })
-    this.Teams.populate({
-        path: 'Team',
+    this.populate({
+        path: 'Teams',
         select: 'Team_Name Members'
     })
     next();
