@@ -4,7 +4,8 @@ const Team = require('../models/Teams');
 
 const register_solo = async (req,res) =>{
 
-    res.send("Working");
+    res.send("Working Path");
+
     const user = await Users.find({_id: req.body.user_id});
     const event = await Events.find({_id: req.body.event_id});
 
@@ -29,6 +30,9 @@ const register_solo = async (req,res) =>{
 }
 
 const register_team = async (req,res) =>{
+
+    res.send("Working Path");
+
     const team = await Team.find({_id: req.body.team_id});
     const event = await Events.find({_id: req.body.event_id});
 
@@ -45,11 +49,11 @@ const register_team = async (req,res) =>{
     }]);
 
     //Increment Participant count by Team Size
-    event.Participants_Count = event_Participants_Count + team.Members.length;
+    event.Participants_Count = event.Participants_Count + team.Members_Count;
 
     //Add Event in all Users
     const members = team.Members;
-    for(let i=0 ; i< members.length; i++){
+    for(let i=0 ; i< team.Members_Count; i++){
         members[i].Events_Participated = members[i].Events_Participated.concat([{
             Event_Name : event.type,
         }]);
