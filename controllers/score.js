@@ -21,32 +21,29 @@ const score_solo = async (req,res) => {
     }
 }
 
-const score_team = async (req,res) => {
-    const { eventName, score } = req.body;
-    events_participated = [... Teams.Events];
-    new event_present = events_participated.find(val => val.values==eventName)
-    if (event_present) {
-        await events_partcipated.forEach(element => {
-            if (element.Event_Name==eventName) {
-                element.Event_Score+=score;
-            }
-        });
+// const score_team = async (req,res) => {
+//     const { eventName, score } = req.body;
+//     events_participated = [... Teams.Events];
+//     new event_present = events_participated.find(val => val.Events==eventName)
+//     if (event_present) {
+//         await events_partcipated.forEach(element => {
+//             if (element.Event_Name==eventName) {
+//                 element.Event_Score+=score;
+//             }
+//         });
 
-        const team = await Teams.find({_id:req.body.team_id})
-        await team.Members.forEach(element => {
-            element.Total_Score = Total_Score + score,
-            element.Events_Participated = events_partcipated
-        });
-    }
-    else{
-        res.status(404).send('No Such Event Available')
-    }
-
-
-
-}
+//         const team = await Teams.find({_id:req.body.team_id})
+//         await team.Members.forEach(element => {
+//             element.Total_Score = Total_Score + score,
+//             element.Events_Participated = events_partcipated
+//         });
+//     }
+//     else{
+//         res.status(404).send('No Such Event Available')
+//     }
+// }
 
 module.exports = {
     score_solo,
-    score_team
+    // score_team
 }

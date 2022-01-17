@@ -4,7 +4,7 @@ const Router = express.Router();
 
 const {getAllUsers, getUser, editUser, eventUser} = require('../controllers/user'); 
 const {getEventLeaderboard} = require('../controllers/leaderboard');
-const {score_solo, score_team} = require('../controllers/score');
+const {score_solo } = require('../controllers/score');
 const {register_solo, register_team} = require('../controllers/register');
 
 Router.route('/login').get();
@@ -21,6 +21,6 @@ Router.route('/register/team').post(register_team);
 Router.route('/leaderboard/:event').get(getEventLeaderboard);
 
 Router.route('/score').post(score_solo);
-Router.route('/score/team').post(score_team);
+Router.route('/score/team').post();
 
 module.exports = Router;

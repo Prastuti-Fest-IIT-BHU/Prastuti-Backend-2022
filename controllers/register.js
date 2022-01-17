@@ -3,6 +3,8 @@ const Events = require('../models/Events');
 const Team = require('../models/Teams');
 
 const register_solo = async (req,res) =>{
+
+    res.send("Working");
     const user = await Users.find({_id: req.body.user_id});
     const event = await Events.find({_id: req.body.event_id});
 
@@ -13,18 +15,13 @@ const register_solo = async (req,res) =>{
 
     //Add event in User
     user.Events_Participated = user.Events_Participated.concat([{
-        Event_Name = event.Name,
-        Event_Score = 0
+        Event_Name : event.type
     }]);
 
     //Add User in Event
     event.Participants = event.Participants.concat([{
-        Participant = user._id,
-        Score = user.Total_Score ,
-        Details : {
-            Round_Name :  event.Name,
-            Round_Score : 0
-        }
+        participant : user._id,
+        Score : user.Total_Score
     }]);
 
     //Increment no. of participants
@@ -43,12 +40,8 @@ const register_team = async (req,res) =>{
     
     //Add team in Event
     event.Teams = event.Teams.concat([{
-        Team = team._id,
-        Score = 0,
-        Details = {
-            Round_Name : event.Name ,
-            Round_Score : 0
-        }
+        team : team._id,
+        Score : 0
     }]);
 
     //Increment Participant count by Team Size
@@ -58,8 +51,7 @@ const register_team = async (req,res) =>{
     const members = team.Members;
     for(let i=0 ; i< members.length; i++){
         members[i].Events_Participated = members[i].Events_Participated.concat([{
-            Event_Name : event.Name,
-            Event_Score : 0
+            Event_Name : event.type,
         }]);
     }
 }
