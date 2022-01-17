@@ -1,19 +1,17 @@
-//Request controller
-
 const Requests = require('../models/Requests');
 const Users = require('../models/Users');
 const Teams = require('../models/Teams');
 
 const getRequest = async (req, res) => {
     const request = await Requests.findById(req.params.id);
-    res.json({
+    res.status(200).json({
         request
     })
 }
 
 const deleteRequest = async (req, res) =>{
     await Requests.findByIdAndDelete(req.body.requestId);
-    res.json({
+    res.status(200).json({
         message: 'Request Deleted'
     })
 }
