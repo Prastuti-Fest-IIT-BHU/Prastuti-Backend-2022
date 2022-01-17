@@ -19,7 +19,7 @@ Router.route('/team/:id').get(getTeam);
 
 Router.route('/request').get(acceptRequest).post(sendRequest).delete(deleteRequest);
 Router.route('/request/:id').get(getRequest);
-
+    
 Router.route('/register').post();
 Router.route('/register/team').post();
 
