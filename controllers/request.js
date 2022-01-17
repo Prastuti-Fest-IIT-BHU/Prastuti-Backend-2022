@@ -22,6 +22,13 @@ const sendRequest = async (req, res) => {
     try {
         const user = await Users.findOne({email_id: req.body.recepient_email});
         const team = await Teams.findOne({_id: req.body.team_id});
+        if (!team || !user){
+            res.status(404).json({
+                message: 'Team or user not found.'
+            });
+            return;
+        }
+
         const request = await Requests.findOne({
             For_Team: req.body.team_id,
             Req_to: user._id
@@ -32,10 +39,11 @@ const sendRequest = async (req, res) => {
             })
             return;
         }
-        
-
-        if (!team || !user){
-            res.status(404).send('Team or user not found.');
+        if(team.Members.find(member => member._id.equals(user._id))) {
+            res.json({
+                message: 'Given user is already added to the team'
+            })
+            return;
         }
 
         if (team.Member_Count < 3) {
