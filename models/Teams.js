@@ -33,13 +33,13 @@ const TeamSchema = new mongoose.Schema({
 })
 
 TeamSchema.pre(/^find/, async function(next) {
-    console.log('Inside pre find middleware');
     this.populate({
         path: 'Members',
         select: '-Teams -Pending_Requests -__v -Events_Participated -Phone -Total_Score'
     })
     this.populate({
-        path: 'Pending_Requests'
+        path: 'Pending_Requests',
+        select: '-For_Team'
     })
     next();
 })

@@ -5,7 +5,7 @@ const Router = express.Router();
 const {getAllUsers, getUser, editUser, eventUser} = require('../controllers/user'); 
 const {getEventLeaderboard} = require('../controllers/leaderboard');
 const {addScore, addTeamScore} = require('../controllers/score');
-const {deleteRequest, sendRequest, acceptRequest} = require('../controllers/request.js');
+const {deleteRequest, sendRequest, acceptRequest, getRequest} = require('../controllers/request.js');
 const {createTeam, getTeam} = require('../controllers/team');
 
 Router.route('/login').get();
@@ -18,6 +18,7 @@ Router.route('/team').post(createTeam);
 Router.route('/team/:id').get(getTeam);
 
 Router.route('/request').get(acceptRequest).post(sendRequest).delete(deleteRequest);
+Router.route('/request/:id').get(getRequest);
 
 Router.route('/register').post();
 Router.route('/register/team').post();
