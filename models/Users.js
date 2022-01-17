@@ -52,7 +52,7 @@ UserSchema.pre(/^find/, async function(next) {
     });
     this.populate({
         path: 'Teams',
-        select: 'Team_Name'
+        select: '-Pending_Requests -Events -__v'
     });
     this.populate({
         path: 'Events_Participated',
