@@ -30,8 +30,11 @@ const eventUser = async (req, res) => {
     const event = await eventModel.findOne({
         Name: req.params.event
     });
+    let data;
+    if(event.Team_Event) data = event.Teams;
+    else data = event.Participants;
     res.status(200).json({
-        users: event.Participants
+        data
     })
 }
 

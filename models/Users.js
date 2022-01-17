@@ -48,11 +48,12 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.pre(/^find/, async function(next) {
     this.populate({
-        path: 'Pending_Requests'
+        path: 'Pending_Requests',
+        select: '-__v -Req_to'
     });
     this.populate({
         path: 'Teams',
-        select: 'Team_Name'
+        select: '-Pending_Requests -Events -__v'
     });
     this.populate({
         path: 'Events_Participated',

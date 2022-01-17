@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 
+const userModel = require('./Users');
+const requestModel = require('./Requests');
+
 const TeamSchema = new mongoose.Schema({
     Team_Name : {
         type : String,
@@ -14,13 +17,10 @@ const TeamSchema = new mongoose.Schema({
             message : 'Invalid Event Name'
         }
     },
-    Members : {
-        type : [{
-            type : mongoose.Schema.Types.ObjectId, 
-            ref : 'user'
-        }],
-        required : true
-    },
+    Members : [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+    }],
     Member_Count : {
         type : Number,
         required : true,
@@ -32,16 +32,17 @@ const TeamSchema = new mongoose.Schema({
     }]
 })
 
-// TeamSchema.pre(/^find/, async function(next) {
-//     this.populate({
-//         path: 'Members',
-//         select: 'Name email_id College'
-//     });
-//     this.populate({
-//         path: 'Pending_Requests'
-//     })
-//     next();
-// })
+TeamSchema.pre(/^find/, async function(next) {
+    this.populate({
+        path: 'Members',
+        select: '-Teams -Pending_Requests -__v -Events_Participated -Phone -Total_Score'
+    })
+    this.populate({
+        path: 'Pending_Requests',
+        select: '-For_Team'
+    })
+    next();
+})
 
 const Team = mongoose.model('team', TeamSchema);
 module.exports = Team;

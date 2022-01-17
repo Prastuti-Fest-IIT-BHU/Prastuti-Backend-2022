@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 
+const userModel = require('./Users');
+const teamModel = require('./Teams');
+
 const ReqSchema = new mongoose.Schema({
     For_Team : {
         type : mongoose.Schema.Types.ObjectId, 
@@ -10,17 +13,26 @@ const ReqSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId, 
         ref : 'user',
         required : true
+    },
+    Req_From : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
+        required: true
     }
 })
 
 ReqSchema.pre(/^find/, function(next) {
     this.populate({
         path: 'For_Team',
-        select: 'Team_Name Members'
+        select: '-Pending_Requests -Events -__v'
     })
     this.populate({
-        path: 'Req_To',
-        select: 'Name email_id College'
+        path: 'Req_to',
+        select: '-Teams -__v -Events_Participated -Phone -Total_Score -Pending_Requests'
+    })
+    this.populate({
+        path: 'Req_From',
+        select: '-Teams -__v -Events_Participated -Phone -Total_Score -Pending_Requests'
     })
     next();
 })
