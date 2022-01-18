@@ -25,6 +25,10 @@ const UserSchema = new mongoose.Schema({
     College : {
         type : String
     },
+    Profile_Photo:{
+        type: String,
+        default: 'https://ibb.co/9Gzy6Nj' 
+    },
     Phone : {
         type : Number
     },
