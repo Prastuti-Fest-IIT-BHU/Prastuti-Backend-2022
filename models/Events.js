@@ -34,10 +34,7 @@ const EventSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'team'
         },
-        Score: {
-            type: Number,
-            default: 0
-        }
+        Score: Number
     }]
 })
 
@@ -47,7 +44,8 @@ EventSchema.pre(/^find/, async function(next) {
         select: '-Teams -Pending_Requests -Events_Participated -__v -Total_Score'
     })
     this.populate({
-        path: 'Teams.team'
+        path: 'Teams.team',
+        select: '-Events_Participated -Pending_Requests -__v'
     })
     next();
 })

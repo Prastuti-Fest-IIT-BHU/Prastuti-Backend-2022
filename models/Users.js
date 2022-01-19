@@ -57,7 +57,7 @@ UserSchema.pre(/^find/, async function(next) {
     });
     this.populate({
         path: 'Teams',
-        select: '-Pending_Requests -Events -__v'
+        select: '-Pending_Requests -Events_Participated -__v'
     });
     this.populate({
         path: 'Events_Participated',

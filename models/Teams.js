@@ -47,6 +47,10 @@ TeamSchema.pre(/^find/, async function(next) {
         path: 'Pending_Requests',
         select: '-For_Team'
     })
+    this.populate({
+        path: 'Events_Participated',
+        select: '-Teams -Participants -__v'
+    })
     next();
 })
 

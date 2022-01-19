@@ -97,7 +97,10 @@ const register_team = async (req,res) =>{
     }
     
     //Add team in Event
-    event.Teams.push(team._id);
+    event.Teams.push({
+        team: team._id,
+        Score: 0
+    });
     event.Participants_Count = event.Participants_Count + team.Members.length;
     
     //Add Event in all Users
