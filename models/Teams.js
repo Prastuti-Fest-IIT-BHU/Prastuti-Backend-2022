@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const userModel = require('./Users');
 const requestModel = require('./Requests');
@@ -9,6 +10,7 @@ const TeamSchema = new mongoose.Schema({
         unique : [true, 'This Team Name is not available'],
         required : true
     },
+    slug: String,
     Events : {
         type : [String],
         required : true,
@@ -30,6 +32,13 @@ const TeamSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId, 
         ref : 'request'
     }]
+})
+
+TeamSchema.pre('save', function(next) {
+    this.slug = slugify(this.Team_Name, {
+        lower: true
+    });
+    next();
 })
 
 TeamSchema.pre(/^find/, async function(next) {

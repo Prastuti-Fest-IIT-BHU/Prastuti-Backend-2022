@@ -6,7 +6,7 @@ const {getAllUsers, getUser, editUser, eventUser, getAllUsersEmail} = require('.
 const {getEventLeaderboard, getLeaderboard} = require('../controllers/leaderboard');
 const {score_solo, score_team} = require('../controllers/score');
 const {deleteRequest, sendRequest, acceptRequest, getRequest} = require('../controllers/request.js');
-const {createTeam, getTeam} = require('../controllers/team');
+const {createTeam, getTeam, getTeamNames} = require('../controllers/team');
 const { register_solo, register_team } = require('../controllers/register');
 const {loginUser} = require('../controllers/login');
 const { getAllEvents, getEvent } = require('../controllers/event');
@@ -21,6 +21,7 @@ Router.route('/users/:event').get(eventUser);
 Router.route('/events').get(getAllEvents);
 Router.route('/event/:id').get(getEvent);
 
+Router.route('/teams').get(getTeamNames);
 Router.route('/team').post(createTeam);
 Router.route('/team/:id').get(getTeam);
 

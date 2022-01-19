@@ -1,5 +1,15 @@
+const slugify = require('slugify');
+
 const teamModel = require('../models/Teams');
 const userModel = require('../models/Users');
+
+const getTeamNames = async (req, res) => {
+    const teams = await teamModel.find({});
+    let teamNames = teams.map(team => team.slug);
+    res.status(200).json({
+        teamNames
+    })
+}
 
 const createTeam = async (req, res) => {
     try {
@@ -7,6 +17,16 @@ const createTeam = async (req, res) => {
         if(!user) {
             res.status(404).json({
                 message: 'User not found'
+            })
+            return;
+        }
+        const curSlug = slugify(req.body.team_name, {
+            lower: true
+        });
+        const team = await teamModel.findOne({slug: curSlug});
+        if(team) {
+            res.json({
+                message: 'Team with this name already exists'
             })
             return;
         }
@@ -18,7 +38,7 @@ const createTeam = async (req, res) => {
             Pending_Requests: []
         });
         user.Teams.push(newTeam._id);
-        let updateUser = await userModel.findByIdAndUpdate(req.body.userID, {
+        let updatedUser = await userModel.findByIdAndUpdate(req.body.userID, {
             Teams: user.Teams
         }, {
             new: true
@@ -27,8 +47,7 @@ const createTeam = async (req, res) => {
         res.status(200).json({
             message: 'New Team Created',
             data: {
-                newTeam,
-                updateUser
+                newTeam
             }
         })
     }
@@ -55,4 +74,4 @@ const getTeam = async (req, res) => {
     }
 }
 
-module.exports = {createTeam, getTeam}
+module.exports = {createTeam, getTeam, getTeamNames}
