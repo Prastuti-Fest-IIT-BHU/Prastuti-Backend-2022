@@ -6,6 +6,14 @@ const register_solo = async (req,res) =>{
     const user = await Users.findById(req.body.user_id);
     const event = await Events.findById(req.body.event_id);
 
+    if(event.Team_Event) {
+        res.json({
+            status: 'Fail',
+            message: 'Cannot register as an individual in team event'
+        })
+        return;
+    }
+
     if (!user || !event){
         return res.status(404).json({
             message: 'User or event not found'
@@ -42,57 +50,83 @@ const register_solo = async (req,res) =>{
         Participants:event.Participants,
         Participants_Count:event.Participants_Count
     }, {new : true});
-    res.status(201).json({message : "Registered Successfully"});
+    res.status(201).json({
+        message : "Registered Successfully",
+        updatedUser
+    });
 }
 
 const register_team = async (req,res) =>{
     const team = await Team.findById(req.body.team_id);
     const event = await Events.findById(req.body.event_id);
+    const curUser = await Users.findById(req.body.user_id);
 
     if (!team || !event){
-        return res.status(404).send('Team or event not found')
+        return res.status(404).json({
+            status: 'Fail',
+            message: 'Team or event not found'
+        })
+        return;
+    }
+
+    const isMember = team.Members.find(member => member._id.equals(curUser._id));
+    if(!isMember) {
+        res.json({
+            status: 'Fail',
+            message: 'Only team member can register team'
+        })
+        return;
     }
 
     // Check if Team Event
-    if (event.Name == "Codigo" || event.Name == "Recognizance" || event.Name == "Cryptex" || event.Name == "Consilium") {
-        res.status(403).send('Not a team event');
+    if (!event.Team_Event) {
+        res.status(403).json({
+            status: 'Fail',
+            message: 'Not a team event'
+        });
+        return;
     }
 
     // Check if already registered
-    team.Events.forEach(element => {
-        if (element == event.Name) {
-            return res.status(409).send('Already Registered');
-        }
-    });
+    console.log(team.Events);
+    const eventExists = team.Events.find(e => e._id.equals(event._id));
+    if(eventExists) {
+        res.json({
+            message: 'Team already registered for this event'
+        })
+    }
     
     //Add team in Event
-    event.Teams = event.Teams.concat([{
-        team : team._id,
-        Score : 0
-    }]);
-
-    //Increment Participant count by Team Size
+    event.Teams.push(team._id);
     event.Participants_Count = event.Participants_Count + team.Members.length;
     
     //Add Event in all Users
-    const members = team.Members;
-    for(let i=0 ; i< members.length; i++){
-        /* Add Event to every User */
-    }
+    team.Members.forEach(async (member) => {
+        let registeredUser = await Users.findById(member._id);
+        registeredUser.Events_Participated.push(event._id);
+        await Users.findByIdAndUpdate(registeredUser._id, {
+            Events_Participated: registeredUser.Events_Participated
+        }, {
+            new: true
+        })
+    })
 
     //Add Event in Team
-    team.Events = team.Events.concat([event.Name]);
+    team.Events.push(event._id);
 
-    Updating in DB
     const updatedTeam = await Team.findByIdAndUpdate(req.body.team_id, {
         Events: team.Events
     },{new: true});
     const updatedEvent = await Events.findByIdAndUpdate(req.body.event_id, {
-        Teams:event.Teams,
+        Teams: event.Teams,
         Participants_Count:event.Participants_Count
     }, {new : true});
+    const updatedUser = await Users.findById(curUser._id);
 
-    res.status(201).json({message: "Team registered successfully", data: {updatedTeam, updatedEvent}});
+    res.status(201).json({
+        message: "Team registered successfully",
+        updatedUser 
+    });
 }
 
 module.exports = {
