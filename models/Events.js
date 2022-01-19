@@ -47,8 +47,7 @@ EventSchema.pre(/^find/, async function(next) {
         select: '-Teams -Pending_Requests -Events_Participated -__v -Total_Score'
     })
     this.populate({
-        path: 'Teams',
-        select: 'Team_Name Members'
+        path: 'Teams.team'
     })
     next();
 })

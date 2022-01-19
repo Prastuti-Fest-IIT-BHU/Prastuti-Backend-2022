@@ -32,7 +32,7 @@ const createTeam = async (req, res) => {
         }
         const newTeam = await teamModel.create({
             Team_Name: req.body.team_name,
-            Events: [],
+            Events_Participated: [],
             Members: [req.body.userID],
             Member_Count: 1,
             Pending_Requests: []
@@ -47,7 +47,8 @@ const createTeam = async (req, res) => {
         res.status(200).json({
             message: 'New Team Created',
             data: {
-                newTeam
+                newTeam,
+                updatedUser
             }
         })
     }

@@ -88,12 +88,12 @@ const register_team = async (req,res) =>{
     }
 
     // Check if already registered
-    console.log(team.Events);
-    const eventExists = team.Events.find(e => e._id.equals(event._id));
+    const eventExists = team.Events_Participated.find(e => e._id.equals(event._id));
     if(eventExists) {
         res.json({
             message: 'Team already registered for this event'
         })
+        return;
     }
     
     //Add team in Event
@@ -112,10 +112,10 @@ const register_team = async (req,res) =>{
     })
 
     //Add Event in Team
-    team.Events.push(event._id);
+    team.Events_Participated.push(event._id);
 
     const updatedTeam = await Team.findByIdAndUpdate(req.body.team_id, {
-        Events: team.Events
+        Events_Participated: team.Events_Participated
     },{new: true});
     const updatedEvent = await Events.findByIdAndUpdate(req.body.event_id, {
         Teams: event.Teams,
