@@ -8,8 +8,9 @@ const {score_solo, score_team} = require('../controllers/score');
 const {deleteRequest, sendRequest, acceptRequest, getRequest} = require('../controllers/request.js');
 const {createTeam, getTeam} = require('../controllers/team');
 const { register_solo, register_team } = require('../controllers/register');
+const {loginUser} = require('../controllers/login')
 
-Router.route('/login').get();
+Router.route('/login').post(loginUser);
 
 Router.route('/user/:id').get(getUser).put(editUser);
 Router.route('/users').get(getAllUsers);
