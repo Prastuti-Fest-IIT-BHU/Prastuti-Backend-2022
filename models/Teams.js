@@ -13,7 +13,8 @@ const TeamSchema = new mongoose.Schema({
     },
     slug: String,
     Events_Participated : [{
-        type: mongoose.Schema.Types.ObjectId
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'event'
     }],
     Members : [{
         type: mongoose.Schema.Types.ObjectId,
