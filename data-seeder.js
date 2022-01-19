@@ -142,10 +142,10 @@ const deleteTeams = async () => {
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
     console.log('Successfully connected to database');
-    populateUsers();
-    // deleteUsers();
-    populateEvents();
-    // deleteEvents();
+    // populateUsers();
+    deleteUsers();
+    // populateEvents();
+    deleteEvents();
     // populateTeams();
-    // deleteTeams();
+    deleteTeams();
 })

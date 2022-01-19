@@ -8,7 +8,8 @@ const {score_solo, score_team} = require('../controllers/score');
 const {deleteRequest, sendRequest, acceptRequest, getRequest} = require('../controllers/request.js');
 const {createTeam, getTeam} = require('../controllers/team');
 const { register_solo, register_team } = require('../controllers/register');
-const {loginUser} = require('../controllers/login')
+const {loginUser} = require('../controllers/login');
+const { getAllEvents } = require('../controllers/event');
 
 Router.route('/login').post(loginUser);
 
@@ -16,6 +17,9 @@ Router.route('/user/:id').get(getUser).put(editUser);
 Router.route('/users').get(getAllUsers);
 Router.route('/users/emails/all').get(getAllUsersEmail);
 Router.route('/users/:event').get(eventUser);
+
+Router.route('/events').get(getAllEvents);
+Router.route('/event/:id').get();
 
 Router.route('/team').post(createTeam);
 Router.route('/team/:id').get(getTeam);

@@ -5,6 +5,11 @@ const connectDB = require('./db/connect')
 const router = require('./routes/routes');
 require('express-async-errors')
 require('dotenv').config();
+const cors = require('cors');
+
+app.use(cors({
+    origin: true
+}))
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))

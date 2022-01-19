@@ -89,6 +89,12 @@ const sendRequest = async (req, res) => {
 const acceptRequest = async (req, res) => {
     try {
         const request = await Requests.findById(req.body.requestId);
+        if(!request) {
+            res.status(404).json({
+                message: 'Request not found'
+            });
+            return;
+        }
         await Requests.findByIdAndDelete(req.body.requestId);
         
         const team = await Teams.findById(request.For_Team._id);

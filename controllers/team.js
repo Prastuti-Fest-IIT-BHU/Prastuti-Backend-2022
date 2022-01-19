@@ -3,6 +3,13 @@ const userModel = require('../models/Users');
 
 const createTeam = async (req, res) => {
     try {
+        let user = await userModel.findById(req.body.userID);
+        if(!user) {
+            res.status(404).json({
+                message: 'User not found'
+            })
+            return;
+        }
         const newTeam = await teamModel.create({
             Team_Name: req.body.team_name,
             Events: [],
@@ -10,7 +17,6 @@ const createTeam = async (req, res) => {
             Member_Count: 1,
             Pending_Requests: []
         });
-        let user = await userModel.findById(req.body.userID);
         user.Teams.push(newTeam._id);
         let updateUser = await userModel.findByIdAndUpdate(req.body.userID, {
             Teams: user.Teams

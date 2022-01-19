@@ -40,6 +40,11 @@ const eventUser = async (req, res) => {
     const event = await eventModel.findOne({
         Name: req.params.event
     });
+    if(!event) {
+        res.status(404).json({
+            message: 'Event not found'
+        });
+    }
     let data;
     if(event.Team_Event) data = event.Teams;
     else data = event.Participants;
