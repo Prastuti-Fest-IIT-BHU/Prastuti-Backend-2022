@@ -12,7 +12,7 @@ const TeamSchema = new mongoose.Schema({
         required : true
     },
     slug: String,
-    Events : [{
+    Events_Participated : [{
         type: mongoose.Schema.Types.ObjectId
     }],
     Members : [{
