@@ -13,7 +13,7 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 8000
 
 app.get('/test', (req, res) => {
     res.json({
