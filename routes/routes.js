@@ -9,7 +9,7 @@ const {deleteRequest, sendRequest, acceptRequest, getRequest} = require('../cont
 const {createTeam, getTeam} = require('../controllers/team');
 const { register_solo, register_team } = require('../controllers/register');
 const {loginUser} = require('../controllers/login');
-const { getAllEvents } = require('../controllers/event');
+const { getAllEvents, getEvent } = require('../controllers/event');
 
 Router.route('/login').post(loginUser);
 
@@ -19,7 +19,7 @@ Router.route('/users/emails/all').get(getAllUsersEmail);
 Router.route('/users/:event').get(eventUser);
 
 Router.route('/events').get(getAllEvents);
-Router.route('/event/:id').get();
+Router.route('/event/:id').get(getEvent);
 
 Router.route('/team').post(createTeam);
 Router.route('/team/:id').get(getTeam);

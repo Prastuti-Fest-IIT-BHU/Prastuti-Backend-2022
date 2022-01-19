@@ -7,4 +7,11 @@ const getAllEvents = async (req, res) => {
     })
 }
 
-module.exports = {getAllEvents};
+const getEvent = async (req, res) => {
+    const event = await eventModel.findById(req.params.id);
+    res.status(200).json({
+        event
+    })
+}
+
+module.exports = {getAllEvents, getEvent};
