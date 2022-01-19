@@ -3,6 +3,7 @@ const slugify = require('slugify');
 
 const userModel = require('./Users');
 const requestModel = require('./Requests');
+const eventModel = require('./Events');
 
 const TeamSchema = new mongoose.Schema({
     Team_Name : {
@@ -11,14 +12,9 @@ const TeamSchema = new mongoose.Schema({
         required : true
     },
     slug: String,
-    Events : {
-        type : [String],
-        required : true,
-        enum : {
-            values: ["Consilium", "Hackathon", "Cryptex", "Codigo", "Simulim", "Recognizance"],
-            message : 'Invalid Event Name'
-        }
-    },
+    Events : [{
+        type: mongoose.Schema.Types.ObjectId
+    }],
     Members : [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
