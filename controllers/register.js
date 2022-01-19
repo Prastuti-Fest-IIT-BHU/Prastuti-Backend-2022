@@ -7,15 +7,20 @@ const register_solo = async (req,res) =>{
     const event = await Events.findById(req.body.event_id);
 
     if (!user || !event){
-        return res.status(404).send('User or event not found')
+        return res.status(404).json({
+            message: 'User or event not found'
+        })
+        return;
     }
 
     // Check if already registered
-    user.Events_Participated.forEach(element => {
-        if (element.Name == event.Name) {
-            return res.status(409).send('Already Registered');
-        }
-    });
+    const eventFound = user.Events_Participated.find(e => e.Name === event.Name);
+    if(eventFound) {
+        res.json({
+            message: 'User already registered for this event'
+        })
+        return;
+    }
     
     //Add event in User
     user.Events_Participated = user.Events_Participated.push(event._id);
@@ -37,7 +42,7 @@ const register_solo = async (req,res) =>{
         Participants:event.Participants,
         Participants_Count:event.Participants_Count
     }, {new : true});
-    res.status(201).json({message : "Registered Successfully", data:{updatedUser, updatedEvent}});
+    res.status(201).json({message : "Registered Successfully"});
 }
 
 const register_team = async (req,res) =>{
