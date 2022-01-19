@@ -6,6 +6,16 @@ const getAllUsers = async (req, res) => {
     res.status(200).json(allusers);
 }
 
+const getAllUsersEmail = async (req, res) => {
+    const allUsers = await userModel.find({});
+    let userEmails = allUsers.map(user => {
+        return user.email_id;
+    })
+    res.status(200).json({
+        data: userEmails
+    })
+}
+
 const getUser = async (req, res) =>{
     const user = await userModel.find({_id:req.params.id});
     if (!user){
@@ -38,5 +48,5 @@ const eventUser = async (req, res) => {
     })
 }
 
-module.exports = {getAllUsers, getUser, editUser, eventUser}
+module.exports = {getAllUsers, getUser, editUser, eventUser, getAllUsersEmail}
 

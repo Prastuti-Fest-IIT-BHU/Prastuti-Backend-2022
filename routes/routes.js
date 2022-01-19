@@ -2,7 +2,7 @@ const express = require('express');
 const res = require('express/lib/response');
 const Router = express.Router();
 
-const {getAllUsers, getUser, editUser, eventUser} = require('../controllers/user'); 
+const {getAllUsers, getUser, editUser, eventUser, getAllUsersEmail} = require('../controllers/user'); 
 const {getEventLeaderboard, getLeaderboard} = require('../controllers/leaderboard');
 const {score_solo, score_team} = require('../controllers/score');
 const {deleteRequest, sendRequest, acceptRequest, getRequest} = require('../controllers/request.js');
@@ -13,6 +13,7 @@ Router.route('/login').get();
 
 Router.route('/user/:id').get(getUser).put(editUser);
 Router.route('/users').get(getAllUsers);
+Router.route('/users/emails/all').get(getAllUsersEmail);
 Router.route('/users/:event').get(eventUser);
 
 Router.route('/team').post(createTeam);
