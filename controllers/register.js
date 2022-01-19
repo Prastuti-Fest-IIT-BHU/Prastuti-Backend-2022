@@ -95,6 +95,28 @@ const register_team = async (req,res) =>{
         })
         return;
     }
+
+    async function checkUsersParticipation() {
+        let check = 0;
+        for(var i=0; i<team.Members.length; i++) {
+            const member = await Users.findById(team.Members[i]._id);
+            if(member.Events_Participated.find(e => {
+                return e.Name === event.Name
+            })) {
+                check++;
+            }
+        }
+        return check;
+    }
+    
+    const check = await checkUsersParticipation();
+    if(check > 0) {
+        res.json({
+            status: 'Fail',
+            message: 'One or more user is already registered in the event with a different team'
+        })
+        return;
+    } 
     
     //Add team in Event
     event.Teams.push({
@@ -104,7 +126,7 @@ const register_team = async (req,res) =>{
     event.Participants_Count = event.Participants_Count + team.Members.length;
     
     //Add Event in all Users
-    team.Members.forEach(async (member) => {
+    await team.Members.forEach(async (member) => {
         let registeredUser = await Users.findById(member._id);
         registeredUser.Events_Participated.push(event._id);
         await Users.findByIdAndUpdate(registeredUser._id, {
