@@ -140,12 +140,15 @@ const deleteTeams = async () => {
     console.log('Deleted all teams');
 }
 
+const refreshDB = async () => {
+    await deleteUsers();
+    await deleteTeams();
+    await deleteEvents();
+    await populateEvents();
+    await populateUsers();
+}
+
 mongoose.connect(process.env.MONGO_URI).then(() => {
     console.log('Successfully connected to database');
-    populateUsers();
-    // deleteUsers();
-    populateEvents();
-    // deleteEvents();
-    // populateTeams();
-    // deleteTeams();
+    refreshDB();
 })
